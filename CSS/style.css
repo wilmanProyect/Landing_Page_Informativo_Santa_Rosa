@@ -11,10 +11,13 @@
 * { box-sizing: border-box; }
 
 body {
+  isolation: isolate;
+  --espacio-vertical: clamp(32px, 6vh, 64px);
   margin: 0;
   min-height: 100vh;
   min-height: 100svh;
-  padding: clamp(32px, 6vh, 64px) 24px;
+  padding: var(--espacio-vertical) 24px;
+  overflow-x: clip;
   background-color: var(--verde);
   color: var(--blanco);
   font-family: "Sofia Sans", sans-serif;
@@ -74,6 +77,31 @@ h1 {
   font-size: 1rem;
   line-height: 1.65;
   text-wrap: pretty;
+}
+
+/* Fondo de pantalla completo, independiente de la altura del contenido. */
+.zona-enlaces {
+  position: relative;
+  isolation: isolate;
+  display: flow-root;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to bottom,
+      rgba(18, 63, 34, 0) 0%,
+      rgba(18, 63, 34, 0) 40%,
+      rgba(18, 63, 34, 0.5) 65%,
+      #123f22 100%),
+    url("../ASSETS/Ovejos Imgen de fondo.jpeg");
+  background-size: cover;
+  background-position: center, center 55%;
+  background-repeat: no-repeat;
 }
 
 .enlaces { display: grid; gap: 12px; }
@@ -155,7 +183,7 @@ footer {
 .firma { color: var(--blanco); font-weight: 500; }
 
 @media (max-width: 360px) {
-  body { padding: 28px 16px; }
+  body { --espacio-vertical: 28px; padding: var(--espacio-vertical) 16px; }
   .marco-logo { width: 148px; padding: 20px; margin-bottom: 24px; }
   .boton { padding-inline: 12px; }
 }
